@@ -7,14 +7,14 @@ public class sorting {
 		int[] arr = new int[] { 60, 15, 20, 0, 5, 103, 2 };
 //		int[] sortedArray = mergeSort(arr, 0, arr.length - 1);
 //		for (int n : sortedArray) {
-//			System.out.println(n);
+//			System.out.println(n); 
 //		}
 
 //		quickSort(arr, 0, arr.length - 1);
 
-//		bubbleSort(arr);
+		bubbleSort(arr);
 //		insertionSort(arr);
-		selectionSort(arr);
+//		selectionSort(arr);
 		for (int n : arr) {
 			System.out.println(n);
 		}
@@ -48,7 +48,7 @@ public class sorting {
 
 			int val = arr[counter];
 
-			int j = counter - 1;
+			int j = counter - 1;   
 
 			while (j >= 0 && arr[j] > val) {
 				arr[j + 1] = arr[j];
