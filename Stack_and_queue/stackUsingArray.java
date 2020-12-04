@@ -74,4 +74,7 @@ public class stackUsingArray {
 		return this.top == -1;
 	}
 	
+	public int size() {
+		return this.size;
+	}
 }
