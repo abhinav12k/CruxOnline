@@ -14,7 +14,7 @@ public class LinkedList {
 	public int getSize() {
 		return this.size;
 	}
-	
+
 	public void display() {
 		Node temp = this.head;
 		System.out.println("**********************************************");
@@ -189,10 +189,10 @@ public class LinkedList {
 		if (this.size == 0)
 			throw new Exception("LinkedList is Empty");
 
-		if(idx<0||idx>=this.size) {
+		if (idx < 0 || idx >= this.size) {
 			throw new Exception("Invalid Index!");
 		}
-		
+
 		if (idx == 0) {
 			return removeFirst();
 		} else if (idx == this.size - 1) {
@@ -209,5 +209,56 @@ public class LinkedList {
 			return rv;
 		}
 
+	}
+
+	public int mid() {
+
+		Node slowNode = this.head;
+		Node fastNode = this.head;
+
+		while (fastNode.next != null && fastNode.next.next != null) {
+			slowNode = slowNode.next;
+			fastNode = fastNode.next.next;
+		}
+		return slowNode.data;
+	}
+
+	public void reverseLLData() throws Exception {
+
+		int left = 0;
+		int right = this.size - 1;
+
+		while (left < right) {
+			Node ln = getNodeAt(left);
+			Node rn = getNodeAt(right);
+
+			int temp = ln.data;
+			ln.data = rn.data;
+			rn.data = temp;
+
+			left++;
+			right--;
+		}
+
+	}
+
+	public void reverseLLPointer() {
+
+		Node prevNode = this.head;
+		Node currNode = prevNode.next;
+
+		while (currNode != null) {
+
+			Node aheadNode = currNode.next;
+			currNode.next = prevNode;
+			prevNode = currNode;
+			currNode = aheadNode;
+		}
+		// swap
+		Node temp = this.head;
+		this.head = this.tail;
+		this.tail = temp;
+
+		this.tail.next = null;
 	}
 }

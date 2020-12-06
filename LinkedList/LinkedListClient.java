@@ -29,7 +29,12 @@ public class LinkedListClient {
 		ll.display();
 		System.out.println(ll.removeAt(5));
 		ll.display();
+		System.out.println(ll.mid());
 		
+		ll.reverseLLData();
+		ll.display();
+		ll.reverseLLPointer();
+		ll.display();
 	}
 
 }
