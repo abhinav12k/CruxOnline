@@ -59,8 +59,28 @@ public class HashTable<K, V> {
 				pair.value = value;
 			}
 		}
+		
+		//For making hash table work as O(1)
+		double lambda = (this.size * 1.0 )/this.bucketArray.length;
+		if(lambda > 0.75) {
+			rehash();
+		}
 	}
 
+	private void rehash() throws Exception {
+		LinkedList<HTPair>[] opa = this.bucketArray;
+		this.bucketArray = (LinkedList<HTPair>[]) new LinkedList[opa.length*2];
+		this.size=0;
+		
+		for(LinkedList<HTPair> op:opa) {
+			while(op!=null&&!op.isEmpty()) {
+				HTPair pair = op.removeFirst();
+				this.put(pair.key,pair.value);
+			}
+		}
+		
+	}
+	
 	private int hashFunction(K key) {
 		int hc = key.hashCode();
 		hc = Math.abs(hc);
@@ -75,6 +95,50 @@ public class HashTable<K, V> {
 			} else
 				System.out.println("null");
 		}
+	}
+
+	public V get(K key) throws Exception {
+		int bi = hashFunction(key);
+		LinkedList<HTPair> bucket = this.bucketArray[bi];
+		HTPair ptf = new HTPair(key, null);
+
+		if (bucket == null) {
+			return null;
+		} else {
+
+			int findAt = bucket.find(ptf);
+			if (findAt == -1) {
+				return null;
+
+			} else {
+				HTPair pair = bucket.getAt(findAt);
+				return pair.value;
+			}
+
+		}
+
+	}
+
+	public V remove(K key) throws Exception {
+
+		int bi = hashFunction(key);
+		LinkedList<HTPair> bucket = this.bucketArray[bi];
+		HTPair ptf = new HTPair(key, null);
+
+		if (bucket == null) {
+			return null;
+		} else {
+			int findAt = bucket.find(ptf);
+			if (findAt == -1) {
+				return null;
+			} else {
+				HTPair p = bucket.getAt(findAt);
+				bucket.removeAt(findAt);
+				this.size--;
+				return p.value;
+			}
+		}
+
 	}
 
 }
