@@ -35,16 +35,31 @@ public class DynamicProgramming {
 //		System.out.println(fibonacciBU(45));
 //		System.out.println("Iterative Solution Fibonacci Solution Time: " + getEsclapedTime() + " millisec");
 
-		startTimer();
-		System.out.println(countBoardPath(0, 30));
-		System.out.println("Recursive Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
+//		startTimer();
+//		System.out.println(countBoardPath(0, 30));
+//		System.out.println("Recursive Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
+//
+//		startTimer();
+//		System.out.println(countBoardPathTD(0, 30, new int[30 + 1]));
+//		System.out.println("Top Down Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
+//
+//		startTimer();
+//		System.out.println(countBoardPathBU(0, 30));
+//		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
+
+		String s1 = "abbgbdsjcbhas";
+		String s2 = "acbgsdncjslsdmcl";
 
 		startTimer();
-		System.out.println(countBoardPathTD(0, 30, new int[30 + 1]));
-		System.out.println("Top Down Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
+		System.out.println(LCS(s1, s2));
+		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
 
 		startTimer();
-		System.out.println(countBoardPathBU(0, 30));
+		System.out.println(LCSTD(s1, s2, new int[s1.length() + 1][s2.length() + 1]));
+		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
+
+		startTimer();
+		System.out.println(LCSBU(s1, s2));
 		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
 	}
 
@@ -142,6 +157,79 @@ public class DynamicProgramming {
 		}
 
 		return strg[0];
+	}
+
+	// Longest common subsequence
+	public static int LCS(String s1, String s2) {
+
+		if (s1.length() == 0 || s2.length() == 0)
+			return 0;
+
+		char ch1 = s1.charAt(0);
+		char ch2 = s2.charAt(0);
+
+		String ros1 = s1.substring(1);
+		String ros2 = s2.substring(1);
+
+		int ans = 0;
+		if (ch1 == ch2) {
+			ans = 1 + LCS(ros1, ros2);
+		} else {
+
+			int fr = LCS(ros1, s2);
+			int sr = LCS(s1, ros2);
+			ans += Math.max(fr, sr);
+		}
+
+		return ans;
+	}
+
+	public static int LCSTD(String s1, String s2, int[][] strg) {
+
+		if (s1.length() == 0 || s2.length() == 0)
+			return 0;
+
+		char ch1 = s1.charAt(0);
+		char ch2 = s2.charAt(0);
+
+		String ros1 = s1.substring(1);
+		String ros2 = s2.substring(1);
+
+		if (strg[s1.length()][s2.length()] != 0) {
+			return strg[s1.length()][s2.length()];
+		}
+
+		int ans = 0;
+
+		if (ch1 == ch2) {
+			ans = 1 + LCSTD(ros1, ros2, strg);
+		} else {
+
+			int fr = LCS(ros1, s2);
+			int sr = LCS(s1, ros2);
+
+			ans += Math.max(fr, sr);
+		}
+		strg[s1.length()][s2.length()] = ans;
+
+		return ans;
+	}
+
+	public static int LCSBU(String s1, String s2) {
+
+		int[][] strg = new int[s1.length() + 1][s2.length() + 1];
+
+		for (int row = s1.length() - 1; row >= 0; row--) {
+			for (int col = s2.length() - 1; col >= 0; col--) {
+				if (s1.charAt(row) == s2.charAt(col)) {
+					strg[row][col] = 1 + strg[row + 1][col + 1];
+				} else {
+					strg[row][col] = Math.max(strg[row + 1][col], strg[row][col + 1]);
+				}
+			}
+		}
+
+		return strg[0][0];
 	}
 
 }
