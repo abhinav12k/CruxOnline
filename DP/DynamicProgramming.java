@@ -47,19 +47,33 @@ public class DynamicProgramming {
 //		System.out.println(countBoardPathBU(0, 30));
 //		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
 
-		String s1 = "abbgbdsjcbhas";
-		String s2 = "acbgsdncjslsdmcl";
+//		String s1 = "abbgbdsjcbhas";
+//		String s2 = "acbgsdncjslsdmcl";
+//
+//		startTimer();
+//		System.out.println(LCS(s1, s2));
+//		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
+//
+//		startTimer();
+//		System.out.println(LCSTD(s1, s2, new int[s1.length() + 1][s2.length() + 1]));
+//		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
+//
+//		startTimer();
+//		System.out.println(LCSBU(s1, s2));
+//		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
 
+		String s1 = "agbgkjsdjcsdcbd";
+		String s2 = "acgbvnkdsvsdncj";
 		startTimer();
-		System.out.println(LCS(s1, s2));
+		System.out.println(EditDistance(s1, s2));
 		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
 
 		startTimer();
-		System.out.println(LCSTD(s1, s2, new int[s1.length() + 1][s2.length() + 1]));
+		System.out.println(EditDistanceTD(s1, s2, new int[s1.length() + 1][s2.length() + 1]));
 		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
 
 		startTimer();
-		System.out.println(LCSBU(s1, s2));
+		System.out.println(EditDistanceBU(s1, s2));
 		System.out.println("Bottom Up Solution Count Board Path Time: " + getEsclapedTime() + " millisec");
 	}
 
@@ -226,6 +240,99 @@ public class DynamicProgramming {
 				} else {
 					strg[row][col] = Math.max(strg[row + 1][col], strg[row][col + 1]);
 				}
+			}
+		}
+
+		return strg[0][0];
+	}
+
+	/**
+	 * Edit Distance Problem Least steps required to change string s1 to string s2
+	 * or vice versa. Operations Allowed: Add/Remove/Replace
+	 */
+	public static int EditDistance(String s1, String s2) {
+
+		if (s1.length() == 0)
+			return s2.length();
+
+		if (s2.length() == 0)
+			return s1.length();
+
+		char ch1 = s1.charAt(0);
+		char ch2 = s2.charAt(0);
+
+		String ros1 = s1.substring(1);
+		String ros2 = s2.substring(1);
+
+		int ans = 0;
+		if (ch1 == ch2) {
+			ans = EditDistance(ros1, ros2);
+		} else {
+			int removeResult = 1 + EditDistance(s1, ros2);
+			int replaceResult = 1 + EditDistance(ros1, ros2);
+			int addResult = 1 + EditDistance(ros1, s2);
+			ans = Math.min(addResult, Math.min(removeResult, replaceResult));
+		}
+		return ans;
+	}
+
+	public static int EditDistanceTD(String s1, String s2, int[][] strg) {
+
+		if (s1.length() == 0)
+			return s2.length();
+
+		if (s2.length() == 0)
+			return s1.length();
+
+		if (strg[s1.length()][s2.length()] != 0)
+			return strg[s1.length()][s2.length()];
+
+		char ch1 = s1.charAt(0);
+		char ch2 = s2.charAt(0);
+
+		String ros1 = s1.substring(1);
+		String ros2 = s2.substring(1);
+
+		int ans = 0;
+		if (ch1 == ch2) {
+			ans = EditDistance(ros1, ros2);
+		} else {
+			int removeResult = 1 + EditDistance(s1, ros2);
+			int replaceResult = 1 + EditDistance(ros1, ros2);
+			int addResult = 1 + EditDistance(ros1, s2);
+			ans = Math.min(addResult, Math.min(removeResult, replaceResult));
+		}
+		strg[s1.length()][s2.length()] = ans;
+
+		return ans;
+
+	}
+
+	public static int EditDistanceBU(String s1, String s2) {
+
+		int[][] strg = new int[s1.length() + 1][s2.length() + 1];
+
+		strg[s1.length()][s2.length()] = 0;
+
+		for (int row = s2.length(); row >= 0; row--) {
+			for (int col = s1.length(); col >= 0; col--) {
+				if (row == s2.length()) {
+					strg[row][col] = s1.length() - col;
+					continue;
+				}
+
+				if (col == s1.length()) {
+					strg[row][col] = s2.length() - row;
+					continue;
+				}
+
+				if (s1.charAt(col) == s2.charAt(row)) {
+					strg[row][col] = strg[row + 1][col + 1];
+				} else {
+					strg[row][col] = 1
+							+ Math.min(strg[row + 1][col + 1], Math.min(strg[row + 1][col], strg[row][col + 1]));
+				}
+
 			}
 		}
 
