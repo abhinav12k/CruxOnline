@@ -107,4 +107,26 @@ public class Graph {
 
 	}
 
+	public boolean hasPath(String vname1, String vname2, HashMap<String, Boolean> processed) {
+
+		//To avoid returning to the same problem - removing stackoverflow error
+		processed.put(vname1, true);
+		
+		//check if direct edge is present
+		if (containsEdge(vname1, vname2))
+			return true;
+
+		Vertex vtx = this.vtcs.get(vname1);
+		ArrayList<String> keys = new ArrayList<>(vtx.nbrs.keySet());
+
+		for (String key : keys) {
+
+			if (!processed.containsKey(key) && hasPath(key, vname2, processed))
+				return true;
+
+		}
+
+		return false;
+	}
+
 }

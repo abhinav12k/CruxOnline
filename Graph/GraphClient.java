@@ -1,5 +1,7 @@
 package CruxOnline.Graph;
 
+import java.util.HashMap;
+
 public class GraphClient {
 
 	public static void main(String[] args) {
@@ -42,6 +44,8 @@ public class GraphClient {
 		
 		graph.removeVertex("G");
 		graph.display();
+		
+		System.out.println(graph.hasPath("A", "G", new HashMap<String,Boolean>()));
 		
 	}
 	
