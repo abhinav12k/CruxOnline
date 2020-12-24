@@ -184,4 +184,50 @@ public class Graph {
 		return false;
 	}
 
+	public boolean dfs(String src, String dst) {
+
+		HashMap<String, Boolean> processed = new HashMap<>();
+
+		LinkedList<Pair> stack = new LinkedList<>();
+
+		Pair sp = new Pair();
+		sp.vname = src;
+		sp.psf = src;
+
+		stack.addFirst(sp);
+
+		while (!stack.isEmpty()) {
+
+			Pair rp = stack.removeFirst();
+
+			if (processed.containsKey(rp.vname))
+				continue;
+
+			// Add pair to processed hashmap
+			processed.put(rp.vname, true);
+
+			if (containsEdge(rp.vname, dst)) {
+				System.out.println(rp.psf + dst);
+				return true;
+			}
+
+			ArrayList<String> nbrs = new ArrayList<>(this.vtcs.get(rp.vname).nbrs.keySet());
+
+			for (String nbr : nbrs) {
+
+				// Process only unprocessed nbrs
+				if (!processed.containsKey(nbr)) {
+					Pair np = new Pair();
+					np.vname = nbr;
+					np.psf = rp.psf + nbr;
+
+					stack.addFirst(np);
+				}
+
+			}
+
+		}
+		return false;
+	}
+
 }

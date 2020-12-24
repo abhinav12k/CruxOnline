@@ -5,28 +5,28 @@ import java.util.HashMap;
 public class GraphClient {
 
 	public static void main(String[] args) {
-		
+
 		Graph graph = new Graph();
-		
+
 		graph.addVertex("A");
-		graph.addVertex("B");
+		graph.addVertex("H");
 		graph.addVertex("C");
 		graph.addVertex("D");
 		graph.addVertex("E");
 		graph.addVertex("F");
 		graph.addVertex("G");
-		
-		graph.addEdge("A", "B", 2);
+
+		graph.addEdge("A", "H", 2);
 		graph.addEdge("A", "D", 15);
-		graph.addEdge("B", "C", 1);
+		graph.addEdge("H", "C", 1);
 		graph.addEdge("C", "D", 6);
 		graph.addEdge("D", "E", 9);
 		graph.addEdge("E", "F", 16);
 		graph.addEdge("E", "G", 12);
 		graph.addEdge("F", "G", 8);
-		
+
 		graph.display();
-		
+
 //		System.out.println(graph.numEdges());
 //		System.out.println(graph.numVertices());
 //		
@@ -46,10 +46,12 @@ public class GraphClient {
 //		graph.display();
 //		
 //		System.out.println(graph.hasPath("A", "G", new HashMap<String,Boolean>()));
-		
+
 //		graph.removeEdge("D", "E");
-		System.out.println(graph.bfs("A","F"));
-		
+		System.out.println(graph.bfs("A", "F"));
+
+		System.out.println(graph.dfs("A", "F"));
+
 	}
-	
+
 }
