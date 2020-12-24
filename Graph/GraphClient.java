@@ -52,11 +52,15 @@ public class GraphClient {
 
 //		graph.bft();
 
-		graph.dft();
-		
+//		graph.dft();
+
 		graph.removeEdge("D", "C");
 		graph.removeEdge("F", "G");
 		System.out.println(graph.isCyclic());
+
+		graph.removeEdge("D", "E");
+		System.out.println(graph.isConnected());
+
 	}
 
 }
