@@ -27,25 +27,28 @@ public class GraphClient {
 		
 		graph.display();
 		
-		System.out.println(graph.numEdges());
-		System.out.println(graph.numVertices());
+//		System.out.println(graph.numEdges());
+//		System.out.println(graph.numVertices());
+//		
+//		System.out.println(graph.containsEdge("A", "D"));
+//		System.out.println(graph.containsEdge("A", "F"));
+//		
+//		graph.removeEdge("A", "B");
+//		graph.display();
+//		
+//		System.out.println(graph.containsVertex("G"));
+//		System.out.println(graph.containsVertex("H"));
+//		
+//		graph.addEdge("A", "G", 100);
+//		graph.display();
+//		
+//		graph.removeVertex("G");
+//		graph.display();
+//		
+//		System.out.println(graph.hasPath("A", "G", new HashMap<String,Boolean>()));
 		
-		System.out.println(graph.containsEdge("A", "D"));
-		System.out.println(graph.containsEdge("A", "F"));
-		
-		graph.removeEdge("A", "B");
-		graph.display();
-		
-		System.out.println(graph.containsVertex("G"));
-		System.out.println(graph.containsVertex("H"));
-		
-		graph.addEdge("A", "G", 100);
-		graph.display();
-		
-		graph.removeVertex("G");
-		graph.display();
-		
-		System.out.println(graph.hasPath("A", "G", new HashMap<String,Boolean>()));
+//		graph.removeEdge("D", "E");
+		System.out.println(graph.bfs("A","F"));
 		
 	}
 	

@@ -2,6 +2,7 @@ package CruxOnline.Graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Graph {
 
@@ -109,10 +110,10 @@ public class Graph {
 
 	public boolean hasPath(String vname1, String vname2, HashMap<String, Boolean> processed) {
 
-		//To avoid returning to the same problem - removing stackoverflow error
+		// To avoid returning to the same problem - removing stackoverflow error
 		processed.put(vname1, true);
-		
-		//check if direct edge is present
+
+		// check if direct edge is present
 		if (containsEdge(vname1, vname2))
 			return true;
 
@@ -123,6 +124,60 @@ public class Graph {
 
 			if (!processed.containsKey(key) && hasPath(key, vname2, processed))
 				return true;
+
+		}
+
+		return false;
+	}
+
+	/*********** Breadth First Search **********/
+
+	public class Pair {
+		String vname;
+		String psf;
+	}
+
+	public boolean bfs(String src, String dst) {
+
+		HashMap<String, Boolean> processed = new HashMap<>();
+		LinkedList<Pair> queue = new LinkedList<>();
+
+		// Create a new Pair
+		Pair sp = new Pair();
+		sp.vname = src;
+		sp.psf = src;
+
+		// Add to the list
+		queue.addLast(sp);
+
+		while (!queue.isEmpty()) {
+
+			Pair rp = queue.removeLast();
+
+			if (processed.containsKey(rp.vname))
+				continue;
+
+			processed.put(rp.vname, true);
+
+			if (containsEdge(rp.vname, dst)) {
+				System.out.println(rp.psf + dst);
+				return true;
+			}
+
+			// nbrs
+			ArrayList<String> nbrs = new ArrayList<>(this.vtcs.get(rp.vname).nbrs.keySet());
+
+			for (String nbr : nbrs) {
+
+				// Process only unprocessed nbrs
+				if (!processed.containsKey(nbr)) {
+					Pair np = new Pair();
+					np.vname = nbr;
+					np.psf = rp.psf + nbr;
+
+					queue.addLast(np);
+				}
+			}
 
 		}
 
