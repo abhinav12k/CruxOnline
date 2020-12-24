@@ -230,4 +230,106 @@ public class Graph {
 		return false;
 	}
 
+	public void bft() {
+
+		HashMap<String, Boolean> processed = new HashMap<>();
+		LinkedList<Pair> queue = new LinkedList<>();
+
+		ArrayList<String> keys = new ArrayList<>(this.vtcs.keySet());
+
+		for (String key : keys) {
+
+			// Create a new Pair
+			Pair sp = new Pair();
+			sp.vname = key;
+			sp.psf = key;
+
+			if (processed.containsKey(key))
+				continue;
+
+			// Add to the list
+			queue.addLast(sp);
+
+			while (!queue.isEmpty()) {
+
+				Pair rp = queue.removeLast();
+
+				if (processed.containsKey(rp.vname))
+					continue;
+
+				processed.put(rp.vname, true);
+
+				System.out.println(rp.vname + " via " + rp.psf);
+
+				// nbrs
+				ArrayList<String> nbrs = new ArrayList<>(this.vtcs.get(rp.vname).nbrs.keySet());
+
+				for (String nbr : nbrs) {
+
+					// Process only unprocessed nbrs
+					if (!processed.containsKey(nbr)) {
+						Pair np = new Pair();
+						np.vname = nbr;
+						np.psf = rp.psf + nbr;
+
+						queue.addLast(np);
+					}
+				}
+
+			}
+		}
+
+	}
+
+	public void dft() {
+
+		HashMap<String, Boolean> processed = new HashMap<>();
+		LinkedList<Pair> stack = new LinkedList<>();
+
+		ArrayList<String> keys = new ArrayList<>(this.vtcs.keySet());
+
+		for (String key : keys) {
+
+			// Create a new Pair
+			Pair sp = new Pair();
+			sp.vname = key;
+			sp.psf = key;
+
+			if (processed.containsKey(key))
+				continue;
+
+			// Add to the list
+			stack.addFirst(sp);
+
+			while (!stack.isEmpty()) {
+
+				Pair rp = stack.removeFirst();
+
+				if (processed.containsKey(rp.vname))
+					continue;
+
+				processed.put(rp.vname, true);
+
+				System.out.println(rp.vname + " via " + rp.psf);
+
+				// nbrs
+				ArrayList<String> nbrs = new ArrayList<>(this.vtcs.get(rp.vname).nbrs.keySet());
+
+				for (String nbr : nbrs) {
+
+					// Process only unprocessed nbrs
+					if (!processed.containsKey(nbr)) {
+						Pair np = new Pair();
+						np.vname = nbr;
+						np.psf = rp.psf + nbr;
+
+						stack.addFirst(np);
+					}
+				}
+
+			}
+		}
+
+	}
+	
 }
