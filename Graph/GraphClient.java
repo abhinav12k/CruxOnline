@@ -49,10 +49,14 @@ public class GraphClient {
 //		System.out.println(graph.bfs("A", "F"));
 
 //		System.out.println(graph.dfs("A", "F"));
-		
+
 //		graph.bft();
-		
+
 		graph.dft();
+		
+		graph.removeEdge("D", "C");
+		graph.removeEdge("F", "G");
+		System.out.println(graph.isCyclic());
 	}
 
 }
