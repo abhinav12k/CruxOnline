@@ -438,4 +438,8 @@ public class Graph {
 			return true;
 	}
 
+	public boolean isTree() {
+		return !isCyclic() && isConnected();
+	}
+
 }

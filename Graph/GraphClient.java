@@ -58,9 +58,10 @@ public class GraphClient {
 		graph.removeEdge("F", "G");
 		System.out.println(graph.isCyclic());
 
-		graph.removeEdge("D", "E");
+//		graph.removeEdge("D", "E");
 		System.out.println(graph.isConnected());
 
+		System.out.println(graph.isTree());
 	}
 
 }
