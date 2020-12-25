@@ -1,39 +1,44 @@
 package CruxOnline.Huffman;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Heap<T extends Comparable<T>> {
 
 	ArrayList<T> data;
+	public HashMap<T, Integer> indexMap;
 
 	public Heap() {
-		this.data = new ArrayList<T>();
+		this.data = new ArrayList<>();
+		this.indexMap = new HashMap<>();
 	}
 
 	public int size() {
-		return data.size();
+		return this.data.size();
 	}
 
 	public boolean isEmpty() {
-		return data.size() == 0;
+		return this.data.size() == 0;
 	}
 
 	public void display() {
-		System.out.println(data);
+		System.out.println(this.data);
 	}
 
 	public void add(T item) {
 
-		data.add(item);
-		int ci = data.size() - 1;
+		this.data.add(item);
+		int ci = this.data.size() - 1;
+		indexMap.put(item, ci);
 		upheapify(ci);
 
 	}
 
-	private void upheapify(int ci) {
+	public void upheapify(int ci) {
+
 		int pi = (ci - 1) / 2;
 
-		if (data.get(ci).compareTo(data.get(pi)) < 0) {
+		if (isLarger(this.data.get(ci), this.data.get(pi)) > 0) {
 			// swap
 			swap(pi, ci);
 			upheapify(pi);
@@ -41,35 +46,40 @@ public class Heap<T extends Comparable<T>> {
 
 	}
 
-	private void swap(int pi, int ci) {
-		T pValue = this.data.get(pi);
+	public void swap(int pi, int ci) {
+
 		T cValue = this.data.get(ci);
+		T pValue = this.data.get(pi);
 
 		this.data.set(pi, cValue);
 		this.data.set(ci, pValue);
+
+		indexMap.put(cValue, pi);
+		indexMap.put(pValue, ci);
 	}
 
 	public T remove() {
-		T temp = this.data.get(0);
+
+		// swap
 		swap(0, this.data.size() - 1);
-		this.data.remove(this.data.size() - 1);
+
+		T rv = this.data.remove(this.data.size() - 1);
+		indexMap.remove(rv);
 		downheapify(0);
-		return temp;
+		return rv;
 	}
 
-	private void downheapify(int pi) {
+	public void downheapify(int pi) {
+
+		int lc = 2 * pi + 1;
+		int rc = 2 * pi + 2;
 
 		int mini = pi;
 
-		int lci = 2 * pi + 1;
-		int rci = 2 * pi + 2;
-
-		if (lci < this.data.size() && this.data.get(lci).compareTo(this.data.get(pi)) > 0) {
-			mini = lci;
-		}
-
-		if (rci < this.data.size() && this.data.get(rci).compareTo(this.data.get(pi)) > 0) {
-			mini = rci;
+		if (lc < this.data.size() && isLarger(this.data.get(lc), this.data.get(pi)) > 0) {
+			mini = lc;
+		} else if (rc < this.data.size() && isLarger(this.data.get(rc), this.data.get(pi)) > 0) {
+			mini = rc;
 		}
 
 		if (mini != pi) {
@@ -79,7 +89,20 @@ public class Heap<T extends Comparable<T>> {
 	}
 
 	public T get() {
-		return data.get(0);
+		return this.data.get(0);
+	}
+
+	// Returns positive value if t has higher priority and returns negative if o has
+	// higher priority
+	public int isLarger(T t, T o) {
+		return t.compareTo(o);
+	}
+
+	public void updatePriority(T item) {
+
+		int index = indexMap.get(item);
+
+		upheapify(index);
 	}
 
 }

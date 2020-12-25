@@ -29,7 +29,7 @@ public class HuffmanEncoder {
 		}
 
 		// 2. Prepare a minHeap of freqMap
-		Heap<Node> minHeap = new Heap<Node>();
+		Heap<Node> minHeap = new Heap<>();
 		Set<Map.Entry<Character, Integer>> entries = freqMap.entrySet();
 
 		for (Map.Entry<Character, Integer> entry : entries) {
@@ -37,21 +37,20 @@ public class HuffmanEncoder {
 			minHeap.add(nn);
 		}
 
-		minHeap.display();
-		
 		// 3. Make the heap empty until there is only one element left which is the tree
 		while (minHeap.size() != 1) {
 			Node n1 = minHeap.remove();
 			Node n2 = minHeap.remove();
 
-			Node combined = new Node(n1, n2);
-			combined.data = '\0';
+			Node combined = new Node(n1,n2);
+			combined.data = '-';
 			combined.cost = n1.cost + n2.cost;
 
 			minHeap.add(combined);
 		}
 
 		Node finalTree = minHeap.remove();
+
 		encoder = new HashMap<Character, String>();
 		decoder = new HashMap<String, Character>();
 		initEncoderDecoder(finalTree, "");
@@ -63,10 +62,11 @@ public class HuffmanEncoder {
 		if (parent == null) {
 			return;
 		}
-
+		
 		if (parent.left == null && parent.right == null) {
 			encoder.put(parent.data, osf);
 			decoder.put(osf, parent.data);
+			return;
 		}
 
 		initEncoderDecoder(parent.left, osf + "0");
@@ -100,7 +100,7 @@ public class HuffmanEncoder {
 
 		return rv;
 	}
-	
+
 	private class Node implements Comparable<Node> {
 
 		char data;
@@ -122,12 +122,13 @@ public class HuffmanEncoder {
 
 		@Override
 		public int compareTo(Node o) {
-			return this.cost - o.cost;
+			// To make sure that min value leaves the heap first
+			return o.cost - this.cost;
 		}
 
 		@Override
 		public String toString() {
-			return "Char: " + data + "\n cost: " + cost;
+			return "Char: " + data + ", cost: " + cost + "\n";
 		}
 	}
 
