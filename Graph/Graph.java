@@ -511,7 +511,9 @@ public class Graph {
 
 		@Override
 		public int compareTo(PrimsPair o) {
-			return this.cost - o.cost;
+			// This makes sure that minimum value has higher priority
+			// Thus making the heap to act as min heap
+			return o.cost - this.cost;
 		}
 	}
 
@@ -581,6 +583,88 @@ public class Graph {
 
 		}
 		return g;
+	}
+
+	/***************** Dijkstra Algo ******************/
+	public class DijkstraPair implements Comparable<DijkstraPair> {
+
+		String vname;
+		String psf;
+		int cost;
+
+		@Override
+		public int compareTo(DijkstraPair o) {
+			// This makes sure that minimum value has higher priority
+			// Thus making the heap to act as min heap
+			return o.cost - this.cost;
+		}
+	}
+
+	public HashMap<String, Integer> dijkstra(String src) {
+
+		HashMap<String, Integer> ans = new HashMap<>();
+
+		HashMap<String, DijkstraPair> map = new HashMap<>();
+		HeapGeneric<DijkstraPair> heap = new HeapGeneric<>();
+
+		ArrayList<String> keys = new ArrayList<>(this.vtcs.keySet());
+
+		// Inserting the pairs to the list
+		for (String key : keys) {
+
+			DijkstraPair np = new DijkstraPair();
+			np.vname = key;
+			np.psf = "";
+			np.cost = Integer.MAX_VALUE;
+
+			if (key.equals(src)) {
+				np.psf = src;
+				np.cost = 0;
+			}
+
+			map.put(key, np);
+			heap.add(np);
+		}
+
+		while (!heap.isEmpty()) {
+
+			DijkstraPair rp = heap.remove();
+
+			map.remove(rp.vname);
+
+			// Put in ans
+			ans.put(rp.vname, rp.cost);
+
+			// Getting neighbors of the rp
+			ArrayList<String> nbrs = new ArrayList<>(this.vtcs.get(rp.vname).nbrs.keySet());
+
+			for (String nbr : nbrs) {
+
+				// Work of nbrs which are in heap
+				if (map.containsKey(nbr)) {
+
+					// Get neighbors cost
+					int oc = map.get(nbr).cost;
+					int nc = rp.cost + this.vtcs.get(rp.vname).nbrs.get(nbr);
+
+					// update the cost in the heap when nc < oc
+					if (nc < oc) {
+
+						DijkstraPair getPair = map.get(nbr);
+						getPair.psf = rp.psf + nbr;
+						getPair.cost = nc;
+
+						// Update in the heap also
+						heap.updatePriority(getPair);
+
+					}
+
+				}
+
+			}
+
+		}
+		return ans;
 	}
 
 }

@@ -15,13 +15,13 @@ public class GraphClient {
 		graph.addVertex("G");
 
 		graph.addEdge("A", "B", 2);
-		graph.addEdge("A", "D", 15);
-		graph.addEdge("B", "C", 1);
-		graph.addEdge("C", "D", 6);
-		graph.addEdge("D", "E", 9);
-		graph.addEdge("E", "F", 16);
-		graph.addEdge("E", "G", 12);
-		graph.addEdge("F", "G", 8);
+		graph.addEdge("A", "D", 10);
+		graph.addEdge("B", "C", 3);
+		graph.addEdge("C", "D", 1);
+		graph.addEdge("D", "E", 8);
+		graph.addEdge("E", "F", 5);
+		graph.addEdge("E", "G", 6);
+		graph.addEdge("F", "G", 4);
 
 		graph.display();
 
@@ -66,8 +66,10 @@ public class GraphClient {
 //		graph.removeEdge("D", "E");
 //		System.out.println(graph.getCC());
 		
-		Graph mst = graph.prims();
-		mst.display();
+//		Graph mst = graph.prims();
+//		mst.display();
+		
+		System.out.println(graph.dijkstra("A"));
 		
 	}
 

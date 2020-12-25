@@ -38,7 +38,7 @@ public class HeapGeneric<T extends Comparable<T>> {
 
 		int pi = (ci - 1) / 2;
 
-		if (this.data.get(ci).compareTo(this.data.get(pi)) < 0) {
+		if (isLarger(this.data.get(ci), this.data.get(pi)) > 0) {
 			// swap
 			swap(pi, ci);
 			upheapify(pi);
@@ -76,9 +76,9 @@ public class HeapGeneric<T extends Comparable<T>> {
 
 		int mini = pi;
 
-		if (lc < this.data.size() && this.data.get(pi).compareTo(this.data.get(lc)) > 0) {
+		if (lc < this.data.size() && isLarger(this.data.get(lc), this.data.get(pi)) > 0) {
 			mini = lc;
-		} else if (rc < this.data.size() && this.data.get(pi).compareTo(this.data.get(rc)) > 0) {
+		} else if (rc < this.data.size() && isLarger(this.data.get(rc), this.data.get(pi)) > 0) {
 			mini = rc;
 		}
 
@@ -90,6 +90,12 @@ public class HeapGeneric<T extends Comparable<T>> {
 
 	public T get() {
 		return this.data.get(0);
+	}
+
+	// Returns positive value if t has higher priority and returns negative if o has
+	// higher priority
+	public int isLarger(T t, T o) {
+		return t.compareTo(o);
 	}
 
 	public void updatePriority(T item) {
