@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import CruxOnline.Heap.HeapGeneric;
+
 public class Graph {
 
 	private class Vertex {
@@ -498,6 +500,87 @@ public class Graph {
 			ans.add(subAns);
 		}
 		return ans;
+	}
+
+	/**************** PRIMS Algo - MST *********************/
+	public class PrimsPair implements Comparable<PrimsPair> {
+
+		String vname;
+		String aqrVname;
+		int cost;
+
+		@Override
+		public int compareTo(PrimsPair o) {
+			return this.cost - o.cost;
+		}
+	}
+
+	public Graph prims() {
+
+		HashMap<String, PrimsPair> map = new HashMap<>();
+		HeapGeneric<PrimsPair> heap = new HeapGeneric<>();
+
+		ArrayList<String> keys = new ArrayList<>(this.vtcs.keySet());
+
+		// Inserting the pairs to the list
+		for (String key : keys) {
+
+			PrimsPair np = new PrimsPair();
+			np.vname = key;
+			np.aqrVname = null;
+			np.cost = Integer.MAX_VALUE;
+
+			map.put(key, np);
+			heap.add(np);
+		}
+
+		// Building a graph(MST)
+		Graph g = new Graph();
+
+		while (!heap.isEmpty()) {
+
+			PrimsPair rp = heap.remove();
+
+			map.remove(rp.vname);
+
+			// If no aqrVname that means it's starting vertex
+			if (rp.aqrVname == null) {
+				g.addVertex(rp.vname);
+			} else {
+				g.addVertex(rp.vname);
+				g.addEdge(rp.vname, rp.aqrVname, rp.cost);
+			}
+
+			// Getting neighbors of the rp
+			ArrayList<String> nbrs = new ArrayList<>(this.vtcs.get(rp.vname).nbrs.keySet());
+
+			for (String nbr : nbrs) {
+
+				// Work of nbrs which are in heap
+				if (map.containsKey(nbr)) {
+
+					// Get neighbors cost
+					int oc = map.get(nbr).cost;
+					int nc = this.vtcs.get(rp.vname).nbrs.get(nbr);
+
+					// update the cost in the heap when nc < oc
+					if (nc < oc) {
+
+						PrimsPair getPair = map.get(nbr);
+						getPair.aqrVname = rp.vname;
+						getPair.cost = nc;
+
+						// Update in the heap also
+						heap.updatePriority(getPair);
+
+					}
+
+				}
+
+			}
+
+		}
+		return g;
 	}
 
 }

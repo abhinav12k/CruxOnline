@@ -56,15 +56,19 @@ public class GraphClient {
 
 //		graph.removeEdge("D", "C");
 //		graph.removeEdge("F", "G");
-		System.out.println(graph.isCyclic());
+//		System.out.println(graph.isCyclic());
 
 //		graph.removeEdge("D", "E");
-		System.out.println(graph.isConnected());
+//		System.out.println(graph.isConnected());
 
-		System.out.println(graph.isTree());
+//		System.out.println(graph.isTree());
 		
-		graph.removeEdge("D", "E");
-		System.out.println(graph.getCC());
+//		graph.removeEdge("D", "E");
+//		System.out.println(graph.getCC());
+		
+		Graph mst = graph.prims();
+		mst.display();
+		
 	}
 
 }
