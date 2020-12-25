@@ -54,14 +54,17 @@ public class GraphClient {
 
 //		graph.dft();
 
-		graph.removeEdge("D", "C");
-		graph.removeEdge("F", "G");
+//		graph.removeEdge("D", "C");
+//		graph.removeEdge("F", "G");
 		System.out.println(graph.isCyclic());
 
 //		graph.removeEdge("D", "E");
 		System.out.println(graph.isConnected());
 
 		System.out.println(graph.isTree());
+		
+		graph.removeEdge("D", "E");
+		System.out.println(graph.getCC());
 	}
 
 }
