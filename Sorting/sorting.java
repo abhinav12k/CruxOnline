@@ -4,7 +4,7 @@ public class sorting {
 
 	public static void main(String[] args) {
 
-		int[] arr = new int[] { 60, 15, 20, 0, 5, 103, 2 };
+		int[] arr = new int[] { 50,60,-5,40,45};
 //		int[] sortedArray = mergeSort(arr, 0, arr.length - 1);
 //		for (int n : sortedArray) {
 //			System.out.println(n); 
@@ -12,8 +12,9 @@ public class sorting {
 
 //		quickSort(arr, 0, arr.length - 1);
 
-		bubbleSort(arr);
+//		bubbleSort(arr);
 //		insertionSort(arr);
+		binaryInsertionSort(arr);
 //		selectionSort(arr);
 		for (int n : arr) {
 			System.out.println(n);
@@ -48,7 +49,7 @@ public class sorting {
 
 			int val = arr[counter];
 
-			int j = counter - 1;   
+			int j = counter - 1;
 
 			while (j >= 0 && arr[j] > val) {
 				arr[j + 1] = arr[j];
@@ -57,6 +58,49 @@ public class sorting {
 			arr[j + 1] = val;
 		}
 
+	}
+
+	private static void binaryInsertionSort(int[] arr) {
+
+		for (int counter = 1; counter < arr.length; counter++) {
+
+			int val = arr[counter];
+
+			//O(logn)
+			int updateIdx = getIndex(arr,counter-1, val);
+			
+			int shiftAmount = counter - updateIdx;
+			int j = counter;
+			while(shiftAmount>0) {
+				arr[j] = arr[j-1];
+				j--;
+				shiftAmount--;
+			}
+			arr[updateIdx] = val;
+		}
+
+	}
+
+	//Using binary search to get index
+	private static int getIndex(int[] arr,int sIdx, int val) {
+		
+		int lo = 0;
+		int hi = sIdx;
+
+		while (lo <= hi) {
+			int mid = lo - (lo - hi) / 2;
+
+			if (arr[mid] == val) {
+				return mid;
+			} else if (arr[mid] > val) {
+				hi = mid - 1;
+			} else {
+				lo = mid + 1;
+			}
+
+		}
+
+		return lo;
 	}
 
 	private static void selectionSort(int[] arr) {
@@ -81,7 +125,6 @@ public class sorting {
 
 	}
 
-	
 	private static int[] mergeSortedArrays(int[] arr1, int[] arr2) {
 
 		int[] mergedArray = new int[arr1.length + arr2.length];
